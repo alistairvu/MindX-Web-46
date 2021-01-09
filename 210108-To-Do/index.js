@@ -22,19 +22,24 @@ function getItems(items) {
 }
 
 function removeItem(e) {
-  const deleteIndex = parseInt(e.target.getAttribute("index"))
-  const items = JSON.parse(window.localStorage.getItem("to-do")) || []
-  const newItems = items.filter((item, index) => index !== deleteIndex)
-  window.localStorage.setItem("to-do", JSON.stringify(newItems))
-  getItems(JSON.parse(window.localStorage.getItem("to-do")))
+  const deleteConfirm = confirm("Do you want to delete?")
+  if (deleteConfirm) {
+    const deleteIndex = parseInt(e.target.getAttribute("index"))
+    const items = JSON.parse(window.localStorage.getItem("to-do")) || []
+    const newItems = items.filter((item, index) => index !== deleteIndex)
+    window.localStorage.setItem("to-do", JSON.stringify(newItems))
+    getItems(JSON.parse(window.localStorage.getItem("to-do")))
+  }
 }
 
 const addItem = () => {
   const nextToDo = toDoAdd.value
-  const items = JSON.parse(window.localStorage.getItem("to-do")) || []
-  window.localStorage.setItem("to-do", JSON.stringify([nextToDo, ...items]))
-  getItems(JSON.parse(window.localStorage.getItem("to-do")))
-  toDoAdd.value = ""
+  if (nextToDo.trim().length > 0) {
+    const items = JSON.parse(window.localStorage.getItem("to-do")) || []
+    window.localStorage.setItem("to-do", JSON.stringify([nextToDo, ...items]))
+    getItems(JSON.parse(window.localStorage.getItem("to-do")))
+    toDoAdd.value = ""
+  }
 }
 
 const findItem = (e) => {
@@ -64,5 +69,5 @@ toDoAdd.addEventListener("keydown", (e) => {
   }
 })
 
-searchBar.addEventListener("keypress", findItem)
+searchBar.addEventListener("keyup", findItem)
 clearSearch.addEventListener("click", deleteSearch)

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book App</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <!--Header-->
+    <div id="app-header">
+      <h1>Book App</h1>
+      <form id="book-form">
+        <input type="text" name="title" placeholder="Title" id="form-title" />
+        <input
+          type="text"
+          name="author"
+          placeholder="Author"
+          id="form-author"
+        />
+        <input type="text" name="isbn" placeholder="ISBN" id="form-isbn" />
+        <button type="submit" id="form-submit">Submit</button>
+      </form>
+    </div>
+    <!--Display-->
+    <div id="app-display">
+      <div id="first-col" class="book-display">
+        <p class="title"><b>Title</b></p>
+        <p class="author"><b>Author</b></p>
+        <p class="isbn"><b>ISBN</b></p>
+      </div>
+      <div id="book-container"></div>
+    </div>
+    <!--Scripts-->
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
