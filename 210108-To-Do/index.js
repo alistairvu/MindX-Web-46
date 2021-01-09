@@ -3,6 +3,7 @@ const toDoAdd = document.getElementById("to-do-add")
 const addBtn = document.getElementById("add-btn")
 const searchBar = document.getElementById("search-bar")
 const clearSearch = document.getElementById("clear-search")
+const clearBtn = document.getElementById("clear-btn")
 
 // functions
 function getItems(items) {
@@ -59,8 +60,13 @@ const deleteSearch = (e) => {
   searchBar.value = ""
 }
 
+const clearAll = (e) => {
+  e.preventDefault()
+  window.localStorage.setItem("to-do", JSON.stringify([]))
+  getItems(JSON.parse(window.localStorage.getItem("to-do")))
+}
 // events
-getItems(JSON.parse(window.localStorage.getItem("to-do")))
+getItems(JSON.parse(window.localStorage.getItem("to-do")) || [])
 
 addBtn.addEventListener("click", addItem)
 toDoAdd.addEventListener("keydown", (e) => {
@@ -71,3 +77,4 @@ toDoAdd.addEventListener("keydown", (e) => {
 
 searchBar.addEventListener("keyup", findItem)
 clearSearch.addEventListener("click", deleteSearch)
+clearBtn.addEventListener("click", clearAll)
