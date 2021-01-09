@@ -30,11 +30,18 @@ function deleteBook(e) {
 const handleSubmit = (e) => {
   e.preventDefault()
   const newBookObject = Object.fromEntries(new FormData(e.target))
-  const data = JSON.parse(window.localStorage.getItem("books")) || []
-  const newData = [newBookObject, ...data]
-  window.localStorage.setItem("books", JSON.stringify(newData))
-  fromArrToBooks(newData)
-  e.target.reset()
+  const { title, author, isbn } = newBookObject
+  if (
+    title.trim().length > 0 &&
+    author.trim().length > 0 &&
+    isbn.trim().length > 0
+  ) {
+    const data = JSON.parse(window.localStorage.getItem("books")) || []
+    const newData = [newBookObject, ...data]
+    window.localStorage.setItem("books", JSON.stringify(newData))
+    fromArrToBooks(newData)
+    e.target.reset()
+  }
 }
 
 // Add event listeners
