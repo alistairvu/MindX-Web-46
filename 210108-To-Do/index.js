@@ -33,11 +33,15 @@ const addToDo = (e) => {
 const doSearch = (e) => {
   const { value } = e.target
   const arr = JSON.parse(window.localStorage.getItem("to-do"))
-  const filtered = arr.filter((x) => x.includes(value))
-  if (filtered.length > 0) {
-    render(filtered)
+  if (value.trim().length > 0) {
+    const filtered = arr.filter((x) => x.includes(value))
+    if (filtered.length > 0) {
+      render(filtered)
+    } else {
+      document.getElementById("to-do-display").innerHTML = `<p>No results.</p>`
+    }
   } else {
-    document.getElementById("to-do-display").innerHTML = `<p>No results.</p>`
+    render(arr)
   }
 }
 
