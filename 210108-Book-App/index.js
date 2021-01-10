@@ -5,7 +5,7 @@ const bookForm = document.getElementById("book-form")
 const display = document.getElementById("book-container")
 
 // Functions
-function fromArrToBooks(arr) {
+function render(arr) {
   let html = ``
   arr.map((item, index) => {
     const { title, author, isbn } = item
@@ -23,7 +23,7 @@ function deleteBook(e) {
   const data = JSON.parse(window.localStorage.getItem("books")) || []
   const newData = data.filter((item, index) => index !== pos)
   window.localStorage.setItem("books", JSON.stringify(newData))
-  fromArrToBooks(newData)
+  render(newData)
   console.log(pos)
 }
 
@@ -39,7 +39,7 @@ const handleSubmit = (e) => {
     const data = JSON.parse(window.localStorage.getItem("books")) || []
     const newData = [newBookObject, ...data]
     window.localStorage.setItem("books", JSON.stringify(newData))
-    fromArrToBooks(newData)
+    render(newData)
     e.target.reset()
   }
 }
@@ -49,4 +49,4 @@ bookForm.addEventListener("submit", handleSubmit)
 
 // Function calls
 const firstData = JSON.parse(window.localStorage.getItem("books")) || []
-console.log(fromArrToBooks(firstData))
+render(firstData)

@@ -9,6 +9,10 @@ body {
   }
 }
 
+h1 {
+  text-align: center;
+}
+
 .book-display {
   width: 100%;
   display: flex;
