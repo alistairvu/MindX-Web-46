@@ -1,3 +1,4 @@
+import "./to-do.js"
 const toDoList = document.getElementById("to-do-list")
 const toDoAdd = document.getElementById("to-do-add")
 const addBtn = document.getElementById("add-btn")
@@ -6,35 +7,20 @@ const clearSearch = document.getElementById("clear-search")
 const clearBtn = document.getElementById("clear-btn")
 
 // functions
-function getItems(items) {
+export function getItems(items) {
   let html = ``
   items.map(
-    (item, index) =>
-      (html += `<li>${item} <button index=${index} class="remove-btn">X</button></li>`)
+    (item, index) => (html += `<to-do item="${item}" index=${index}></to-do>`)
   )
   toDoList.innerHTML = `
-  <ul>
+  <div>
     ${html}
-  </ul>`
-
-  Array.from(document.getElementsByClassName("remove-btn")).forEach((x) =>
-    x.addEventListener("click", removeItem)
-  )
-}
-
-function removeItem(e) {
-  const deleteConfirm = confirm("Do you want to delete?")
-  if (deleteConfirm) {
-    const deleteIndex = parseInt(e.target.getAttribute("index"))
-    const items = JSON.parse(window.localStorage.getItem("to-do")) || []
-    const newItems = items.filter((item, index) => index !== deleteIndex)
-    window.localStorage.setItem("to-do", JSON.stringify(newItems))
-    getItems(JSON.parse(window.localStorage.getItem("to-do")))
-  }
+  </div>`
 }
 
 const addItem = () => {
   const nextToDo = toDoAdd.value
+  console.log(nextToDo)
   if (nextToDo.trim().length > 0) {
     const items = JSON.parse(window.localStorage.getItem("to-do")) || []
     window.localStorage.setItem("to-do", JSON.stringify([nextToDo, ...items]))
@@ -45,13 +31,11 @@ const addItem = () => {
 
 const findItem = (e) => {
   const searchTerm = e.target.value.trim().toLowerCase()
-  console.log(searchTerm)
   const items = JSON.parse(window.localStorage.getItem("to-do")) || []
   const goodItems =
     searchTerm.length > 0
       ? items.filter((item) => item.toLowerCase().includes(searchTerm))
       : items
-  console.log(goodItems)
   getItems(goodItems)
 }
 
