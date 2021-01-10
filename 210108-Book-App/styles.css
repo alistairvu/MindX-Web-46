@@ -1,16 +1,51 @@
-body {
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+
+#app-header {
+  padding-bottom: 20px;
+  background-color: yellow;
+}
+
+#app-header h1 {
+  padding: 20px;
+  font-size: 3rem;
+}
+
+#header-content form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#header-content #form-title {
+  flex-basis: 100%;
+}
+
+#header-content #form-author {
+  flex-basis: 56%;
+}
+
+#header-content #form-isbn {
+  flex-basis: 40%;
+}
+
+#header-content form button {
+  float: right;
+}
+
+#header-content, #app-display {
   width: 60vw;
   margin: 0 auto;
 }
 
 @media (max-width: 768px) {
-  body {
+  #header-content, #app-display {
     width: 100vw;
   }
-}
-
-h1 {
-  text-align: center;
 }
 
 .book-display {

@@ -9,25 +9,27 @@
   <body>
     <!--Header-->
     <div id="app-header">
-      <h1>Book App</h1>
-      <form id="book-form">
-        <input type="text" name="title" placeholder="Title" id="form-title" />
-        <input
-          type="text"
-          name="author"
-          placeholder="Author"
-          id="form-author"
-        />
-        <input type="text" name="isbn" placeholder="ISBN" id="form-isbn" />
-        <button type="submit" id="form-submit">Submit</button>
-      </form>
+      <div id="header-content">
+        <h1>what have you read?</h1>
+        <form id="book-form">
+          <input type="text" name="title" placeholder="title" id="form-title" />
+          <input
+            type="text"
+            name="author"
+            placeholder="author"
+            id="form-author"
+          />
+          <input type="text" name="isbn" placeholder="isbn" id="form-isbn" />
+          <button type="submit" id="form-submit">Submit</button>
+        </form>
+      </div>
     </div>
     <!--Display-->
     <div id="app-display">
       <div id="first-col" class="book-display">
-        <p class="title"><b>Title</b></p>
-        <p class="author"><b>Author</b></p>
-        <p class="isbn"><b>ISBN</b></p>
+        <p class="title"><b>title</b></p>
+        <p class="author"><b>author</b></p>
+        <p class="isbn"><b>isbn</b></p>
       </div>
       <div id="book-container"></div>
     </div>
