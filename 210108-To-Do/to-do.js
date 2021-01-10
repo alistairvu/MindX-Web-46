@@ -1,25 +1,27 @@
-import { getItems } from "./index.js"
+import { render } from "./utils.js"
 
 const styles = `
 <style>
+* {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  color: white;
+}
+
 .container {
+  margin: 15px 30px;
+  width: calc(100% - 60px);
   display: flex;
-  width: 100%;
   justify-content: space-between;
   align-items: center;
 }
 
-#del-btn {
-  font-family: "Roboto Slab", serif;
-  color: #1d3c34;
-  background: #e6e6de;
+button {
+  background: transparent;
   border: none;
-  padding: 0px 10px;
-  height: 2rem;
-}
-
-#item {
-  font-size: 1.25rem;
+  cursor: pointer;
 }
 </style>`
 
@@ -35,24 +37,24 @@ class ToDo extends HTMLElement {
     this._shadowRoot.innerHTML = `
     ${styles}
     <div class="container">
-      <p id="item">${this.item}</p>
-      <button id="del-btn">X</button>
+      <p>${this.item}</p>
+      <button id="del-btn"><b>X</b></button>
     </div>`
 
     this._shadowRoot
       .getElementById("del-btn")
-      .addEventListener("click", (e) => this.deleteItem(e))
+      .addEventListener("click", (e) => this.delete(e))
   }
 
-  deleteItem(e) {
-    e.preventDefault()
-    const deleteConfirm = confirm("Do you want to delete?")
-    if (deleteConfirm) {
-      const deleteIndex = parseInt(this.index)
-      const items = JSON.parse(window.localStorage.getItem("to-do")) || []
-      const newItems = items.filter((item, index) => index !== deleteIndex)
-      window.localStorage.setItem("to-do", JSON.stringify(newItems))
-      getItems(JSON.parse(window.localStorage.getItem("to-do")))
+  delete(e) {
+    const del = confirm("Do you want to delete?")
+    if (del) {
+      const oldArr = JSON.parse(window.localStorage.getItem("to-do"))
+      const newArr = oldArr.filter(
+        (item, index) => index !== parseInt(this.index)
+      )
+      window.localStorage.setItem("to-do", JSON.stringify(newArr))
+      render(newArr)
     }
   }
 }
