@@ -19,15 +19,18 @@ function render(arr) {
 }
 
 function deleteBook(e) {
-  const pos = parseInt(e.target.getAttribute("pos"))
-  const data = JSON.parse(window.localStorage.getItem("books")) || []
-  const newData = data.filter((item, index) => index !== pos)
-  window.localStorage.setItem("books", JSON.stringify(newData))
-  render(newData)
-  console.log(pos)
+  const del = confirm("Do you really want to delete this book?")
+  if (del) {
+    const pos = parseInt(e.target.getAttribute("pos"))
+    const data = JSON.parse(window.localStorage.getItem("books")) || []
+    const newData = data.filter((item, index) => index !== pos)
+    window.localStorage.setItem("books", JSON.stringify(newData))
+    render(newData)
+    console.log(pos)
+  }
 }
 
-const handleSubmit = (e) => {
+function handleSubmit(e) {
   e.preventDefault()
   const newBookObject = Object.fromEntries(new FormData(e.target))
   const { title, author, isbn } = newBookObject
