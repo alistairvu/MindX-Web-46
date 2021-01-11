@@ -72,6 +72,8 @@
 .book-display {
   width: 100%;
   display: flex;
+  padding: 10px 0;
+  align-items: center;
 }
 
 .title {
@@ -92,3 +94,4 @@
   background: transparent;
   cursor: pointer;
 }
+
