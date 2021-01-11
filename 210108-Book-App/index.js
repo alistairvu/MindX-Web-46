@@ -26,7 +26,6 @@ function deleteBook(e) {
     const newData = data.filter((item, index) => index !== pos)
     window.localStorage.setItem("books", JSON.stringify(newData))
     render(newData)
-    console.log(pos)
   }
 }
 
