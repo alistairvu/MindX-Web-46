@@ -26,11 +26,21 @@
 }
 
 #form-author {
-  flex-basis: 58%;
+  width: 50%;
 }
 
 #form-isbn {
-  flex-basis: 40%;
+  width: 40%;
+}
+
+@media (max-width: 480px) {
+  #form-author {
+    width: 100%;
+  }
+
+  #form-isbn {
+    width: 100%;
+  }
 }
 
 #header-content form input {
@@ -49,6 +59,7 @@
   background: transparent;
   font-weight: 600;
   cursor: pointer;
+  padding: 0 10px;
 }
 
 
@@ -93,5 +104,6 @@
   border: none;
   background: transparent;
   cursor: pointer;
+  padding: 0 10px;
 }
 
