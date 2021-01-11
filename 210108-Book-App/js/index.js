@@ -1,5 +1,14 @@
 import Book from "./book.js"
 
+// add service worker
+window.onload = () => {
+  "use strict"
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js")
+  }
+}
+
 // Elements
 const bookForm = document.getElementById("book-form")
 const display = document.getElementById("book-container")
