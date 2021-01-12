@@ -15,7 +15,6 @@ const findUser = async (e) => {
     const res = await fetch(`https://api.github.com/users/${searchTerm}`)
     if (res.ok) {
       const data = await res.json()
-      console.log(data)
       const { followers, avatar_url, name, login, email, company } = data
       const filteredData = {
         followers,
