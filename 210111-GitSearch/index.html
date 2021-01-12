@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitSearch</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <app-header></app-header>
+    <!--Search Bar-->
+    <div class="search-area">
+      <h1>Find the user you want</h1>
+      <form id="search-form" class="container">
+        <input type="text" id="search-term" placeholder="Enter a username..." />
+        <button id="search-btn">Search</button>
+      </form>
+    </div>
+    <!--Result-->
+    <div id="result-display"></div>
+    <!--JS-->
+    <script type="module" src="./js/index.js"></script>
+  </body>
+</html>
