@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Find a GitHub user with a specific username"
+    />
     <title>GitSearch</title>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -12,7 +16,12 @@
     <div class="search-area">
       <h1>Find the user you want</h1>
       <form id="search-form" class="container">
-        <input type="text" id="search-term" placeholder="Enter a username..." />
+        <input
+          type="text"
+          name="search-term"
+          id="search-term"
+          placeholder="Enter a username..."
+        />
         <button id="search-btn">Search</button>
       </form>
     </div>
