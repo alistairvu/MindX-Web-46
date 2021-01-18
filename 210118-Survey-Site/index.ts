@@ -1,11 +1,13 @@
-import { showID, showMagic } from "./controllers/methods"
+import { showID, showAskForm, addQuestion } from "./controllers/methods"
 const express = require("express")
-const path = require("path")
 const app = express()
 const port: number = 6960
 
-app.use(express.static(path.join(__dirname, "/public")))
-app.get("/", showMagic).get("/:id", showID)
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(express.static("public"))
+
+app.get("/", showAskForm).get("/:id", showID).post("/add-question", addQuestion)
 
 app.listen(port, (err: any) => {
   if (err) throw err
