@@ -27,8 +27,8 @@ function getCountStudentWithLastName(): number {
 
 // Tính điểm trung bình của toàn bộ sinh viên (làm tròn đến một chữ số sau dấu phẩy)
 function calAverageMark(): number {
-  const studentCount = data.length
-  const scoreTotal = data.reduce((prev: number, curr: Student) => {
+  const studentCount: number = data.length
+  const scoreTotal: number = data.reduce((prev: number, curr: Student) => {
     const { mark } = curr
     return prev + mark
   }, 0)
