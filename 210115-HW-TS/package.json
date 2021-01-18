@@ -2,7 +2,7 @@
   "name": "nodejs_practice",
   "version": "1.0.0",
   "description": "nodejs_practice",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "mocha -r ts-node/register test.ts"
   },
