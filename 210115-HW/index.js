@@ -13,8 +13,7 @@ function getDetailStudent() {
 function getCountStudentWithLastName() {
   return data.reduce((prev, curr) => {
     const { name } = curr
-    const [lastName, firstName] = name.split(" ")
-    return lastName === "Nguyễn" ? prev + 1 : prev
+    return name.includes("Nguyễn") ? prev + 1 : prev
   }, 0)
 }
 
