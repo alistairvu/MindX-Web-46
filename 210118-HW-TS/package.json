@@ -1,7 +1,7 @@
 {
   "name": "210118-hw-ts",
   "version": "1.0.0",
-  "main": "server.ts",
+  "main": "./server/index.ts",
   "license": "MIT",
   "dependencies": {
     "@tsconfig/node14": "^1.0.0",

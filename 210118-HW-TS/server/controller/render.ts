@@ -4,14 +4,14 @@ const path = require("path")
 // @param   GET /
 const loadMain = (request: any, response: any) => {
   response.status(200)
-  response.sendFile(path.resolve(__dirname, "../public/main/index.html"))
+  response.sendFile(path.resolve(__dirname, "../../public/main/index.html"))
 }
 
 // @desc    Load ask page
 // @param   GET /ask
 const loadAsk = (request: any, response: any) => {
   response.status(200)
-  response.sendFile(path.resolve(__dirname, "../public/ask/index.html"))
+  response.sendFile(path.resolve(__dirname, "../../public/ask/index.html"))
 }
 
 export { loadAsk, loadMain }
