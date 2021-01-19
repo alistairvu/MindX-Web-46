@@ -71,8 +71,6 @@ const addVote = (request: any, response: any) => {
     const { _id, vote } = voteReq
     const question: Question = data.find((x: Question) => x._id === _id)
 
-    console.log("question", question)
-
     let newQuestion: Question
     if (vote === "up") {
       newQuestion = { ...question, upVote: question.upVote + 1 }
@@ -86,7 +84,6 @@ const addVote = (request: any, response: any) => {
       }
       return item
     })
-    console.log(newData)
 
     fs.writeFileSync(
       path.resolve(__dirname, "./data.json"),

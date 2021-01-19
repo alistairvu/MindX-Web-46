@@ -28,9 +28,22 @@ const getVote = async (type, id) => {
     const { data } = await res.json()
 
     const { upVote, downVote } = data
+    const upPercent = Math.floor((upVote / (upVote + downVote)) * 10000) / 100
+    const downPercent = 100 - upPercent
+
     container.innerHTML = `<p>Thank you for voting! The question "${questionContent}" has been upvoted ${upVote} ${
       upVote === 1 ? "time" : "times"
-    } and downvoted ${downVote} ${downVote === 1 ? "time" : "times"}.</p>`
+    } (<span style="color: rgb(0, ${
+      (255 * upPercent) / 100
+    }, 0);">${upPercent.toFixed(2)}%</span>) and downvoted ${downVote} ${
+      downVote === 1 ? "time" : "times"
+    } (<span style="color: rgb(${
+      (255 * downPercent) / 100
+    }, 0, 0);">${downPercent.toFixed(2)}%</span>).</p>
+    <button id="reload-btn">Load another question</button>`
+    document
+      .getElementById("reload-btn")
+      .addEventListener("click", () => location.reload())
   } catch (error) {
     console.log(error)
   }
