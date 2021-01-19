@@ -2,6 +2,20 @@ const { v4: uuidv4 } = require("uuid")
 const path = require("path")
 const fs = require("fs")
 
+// @desc    Load main page
+// @param   GET /
+const loadMain = (request: any, response: any) => {
+  response.status(200)
+  response.sendFile(path.resolve(__dirname, "../public/main/index.html"))
+}
+
+// @desc    Load ask page
+// @param   GET /ask
+const loadAsk = (request: any, response: any) => {
+  response.status(200)
+  response.sendFile(path.resolve(__dirname, "../public/ask/index.html"))
+}
+
 // @desc    Get one question from the pool of questions
 // @param   GET /get-question
 const getRandomQuestion = (request: any, response: any) => {
@@ -24,7 +38,6 @@ const addQuestion = (request: any, response: any) => {
   const data: Array<Question> = JSON.parse(
     fs.readFileSync(path.resolve(__dirname, "./data.json"))
   )
-  console.log(data)
   const { content }: { content: string } = request.body
 
   if (!content) {
@@ -87,6 +100,8 @@ const addVote = (request: any, response: any) => {
       }
       return item
     })
+    console.log(newData)
+
     fs.writeFileSync(
       path.resolve(__dirname, "./data.json"),
       JSON.stringify(newData)
@@ -100,4 +115,4 @@ const addVote = (request: any, response: any) => {
   }
 }
 
-export { getRandomQuestion, addQuestion, addVote }
+export { loadMain, getRandomQuestion, addQuestion, addVote, loadAsk }

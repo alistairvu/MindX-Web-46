@@ -1,4 +1,10 @@
-import { getRandomQuestion, addQuestion, addVote } from "./controller/methods"
+import {
+  loadMain,
+  loadAsk,
+  getRandomQuestion,
+  addQuestion,
+  addVote,
+} from "./controller/methods"
 const express = require("express")
 
 const app = express()
@@ -8,6 +14,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.static("public"))
 
+app.get("/", loadMain)
+app.get("/ask", loadAsk)
 app.get("/get-question", getRandomQuestion)
 app.post("/add-question", addQuestion)
 app.put("/add-vote", addVote)
