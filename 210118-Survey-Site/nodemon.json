@@ -1,5 +1,0 @@
-{
-  "ext": "ts,json,css,html",
-  "ignore": ["src/**/*.spec.ts"],
-  "exec": "ts-node"
-}
