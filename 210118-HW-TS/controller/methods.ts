@@ -54,7 +54,7 @@ const addQuestion = (request: any, response: any) => {
 }
 
 // @desc    Add a vote
-// @params  PUT /add-vote
+// @param   PUT /add-vote
 const addVote = (request: any, response: any) => {
   const data: Array<Question> = JSON.parse(
     fs.readFileSync(path.resolve(__dirname, "./data.json"))
