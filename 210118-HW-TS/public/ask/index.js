@@ -1,7 +1,6 @@
-console.log("Shoot take a pano-rama!")
-
 const askForm = document.getElementById("ask-form")
 const askBox = document.getElementById("ask-box")
+const charCount = document.getElementById("char-count")
 
 const handleSubmit = async (e) => {
   e.preventDefault()
@@ -22,4 +21,16 @@ const handleSubmit = async (e) => {
   }
 }
 
+const countChar = (e) => {
+  e.preventDefault()
+  const count = askBox.value.length
+  charCount.innerHTML = `${count}/200 characters`
+  if (count >= 190) {
+    charCount.style.color = "red"
+  } else {
+    charCount.style.color = "black"
+  }
+}
+
 askForm.addEventListener("submit", handleSubmit)
+askBox.addEventListener("keyup", countChar)
