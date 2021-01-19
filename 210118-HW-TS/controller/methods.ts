@@ -2,20 +2,6 @@ const { v4: uuidv4 } = require("uuid")
 const path = require("path")
 const fs = require("fs")
 
-// @desc    Load main page
-// @param   GET /
-const loadMain = (request: any, response: any) => {
-  response.status(200)
-  response.sendFile(path.resolve(__dirname, "../public/main/index.html"))
-}
-
-// @desc    Load ask page
-// @param   GET /ask
-const loadAsk = (request: any, response: any) => {
-  response.status(200)
-  response.sendFile(path.resolve(__dirname, "../public/ask/index.html"))
-}
-
 // @desc    Get one question from the pool of questions
 // @param   GET /get-question
 const getRandomQuestion = (request: any, response: any) => {
@@ -115,4 +101,4 @@ const addVote = (request: any, response: any) => {
   }
 }
 
-export { loadMain, getRandomQuestion, addQuestion, addVote, loadAsk }
+export { getRandomQuestion, addQuestion, addVote }

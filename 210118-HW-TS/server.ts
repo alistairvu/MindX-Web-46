@@ -1,10 +1,5 @@
-import {
-  loadMain,
-  loadAsk,
-  getRandomQuestion,
-  addQuestion,
-  addVote,
-} from "./controller/methods"
+import { getRandomQuestion, addQuestion, addVote } from "./controller/methods"
+import { loadMain, loadAsk } from "./controller/render"
 const express = require("express")
 
 const app = express()
