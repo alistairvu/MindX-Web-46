@@ -3,17 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>askme: Ask</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/ask/styles.css" />
+    <script defer type="module" src="/ask/index.js"></script>
   </head>
   <body>
+    <app-header></app-header>
     <div id="container">
       <h3>Ask the community a yes-no question!</h3>
       <form id="ask-form">
-        <textarea id="ask-box" maxlength="200"></textarea>
+        <textarea id="ask-box" maxlength="200" cols="50" rows="5"></textarea>
         <p id="char-count">0/200 characters</p>
-        <button type="ask-submit">Ask!</button>
+        <button id="ask-submit" type="submit">Ask!</button>
       </form>
     </div>
-    <script src="/ask/index.js"></script>
   </body>
 </html>
