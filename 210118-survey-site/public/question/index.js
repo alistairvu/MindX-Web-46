@@ -1,5 +1,3 @@
-import "/components/app-header.js"
-
 const container = document.getElementById("container")
 
 const fetchQuestion = async () => {

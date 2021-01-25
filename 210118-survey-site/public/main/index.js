@@ -1,4 +1,3 @@
-import "/components/app-header.js"
 const container = document.getElementById("container")
 let id
 
