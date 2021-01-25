@@ -12,17 +12,35 @@ const fetchQuestion = async () => {
   }
 }
 
+const handleUpVote = () => getVote("up", id)
+const handleDownVote = () => getVote("down", id)
+const handleResults = () =>
+  (location.href = `http://localhost:6960/question/${id}`)
+
 const addEventListeners = () => {
   const upButton = document.getElementById("up-vote")
   const downButton = document.getElementById("down-vote")
   const newButton = document.getElementById("new-question")
   const resultButton = document.getElementById("results-btn")
-  upButton.addEventListener("click", () => getVote("up", id))
-  downButton.addEventListener("click", () => getVote("down", id))
+
+  upButton.addEventListener("click", handleUpVote)
+  downButton.addEventListener("click", handleDownVote)
   newButton.addEventListener("click", reloadQuestion)
-  resultButton.addEventListener(
+  resultButton.addEventListener("click", handleResults)
+}
+
+const removeEventListeners = (prevId) => {
+  const upButton = document.getElementById("up-vote")
+  const downButton = document.getElementById("down-vote")
+  const newButton = document.getElementById("new-question")
+  const resultButton = document.getElementById("results-btn")
+
+  upButton.removeEventListener("click", () => getVote("up", prevId))
+  downButton.removeEventListener("click", () => getVote("down", prevId))
+  newButton.removeEventListener("click", reloadQuestion)
+  resultButton.removeEventListener(
     "click",
-    () => (location.href = `http://localhost:6960/question/${id}`)
+    () => (location.href = `http://localhost:6960/question/${prevId}`)
   )
 }
 
@@ -89,7 +107,9 @@ const reloadQuestion = async () => {
   try {
     const { _id, content } = await fetchQuestion()
     document.getElementById("question").innerHTML = content
+    const prevId = id
     id = _id
+    removeEventListeners(prevId)
     addEventListeners()
   } catch (err) {
     console.log(err)
