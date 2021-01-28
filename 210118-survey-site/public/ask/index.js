@@ -1,6 +1,6 @@
-const askForm = document.getElementById("ask-form")
+const askForm = $("#ask-form")
 const askBox = document.getElementById("ask-box")
-const charCount = document.getElementById("char-count")
+const charCount = $("#char-count")
 
 const handleSubmit = async (e) => {
   e.preventDefault()
@@ -29,13 +29,13 @@ const handleSubmit = async (e) => {
 
 const countChar = () => {
   const count = askBox.value.length
-  charCount.innerHTML = `${count}/200 characters`
+  charCount.html(`<p>${count}/200 characters</p>`)
   if (count >= 190) {
-    charCount.style.color = "red"
+    charCount.css("color", "red")
   } else {
-    charCount.style.color = "black"
+    charCount.css("color", "black")
   }
 }
 
-askForm.addEventListener("submit", handleSubmit)
+askForm.submit(handleSubmit)
 askBox.addEventListener("input", countChar)

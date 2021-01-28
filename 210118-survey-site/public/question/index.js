@@ -1,18 +1,18 @@
-const container = document.getElementById("container")
+const container = $("#container")
 
 const fetchQuestion = async () => {
   try {
     const id = window.location.pathname.split("/")[2]
     const res = await fetch(`http://localhost:6960/api/get-question/${id}`)
     const { data, success } = await res.json()
-    console.log(success)
 
     if (success) {
       const { upVote, downVote, content } = data
       const upPercent = (upVote / (upVote + downVote)) * 100 || 0
       const downPercent = 100 - upPercent || 0
 
-      container.innerHTML = `
+      container.html(`
+      <div id="container">
     <div class="confirm-text">
       <p>The question "${content}" has been upvoted ${upVote} ${
         upVote === 1 ? "time" : "times"
@@ -24,16 +24,12 @@ const fetchQuestion = async () => {
         (255 * downPercent) / 100
       }, 0, 0);">${downPercent.toFixed(2)}%</span>).</p>
       <button id="reload-btn" style="margin-top: 10px;">New question</button>
-    </div>`
+    </div>
+    </div>`)
 
-      document
-        .getElementById("reload-btn")
-        .addEventListener(
-          "click",
-          () => (location.href = "http://localhost:6960")
-        )
+      $("#reload-btn").click(() => (location.href = "http://localhost:6960"))
     } else {
-      container.innerHTML = `<h3>Question not found</h3>`
+      container.html(`<div id="container"><h3>Question not found</h3></div>`)
     }
   } catch (err) {
     console.log(err)
