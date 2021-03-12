@@ -30,4 +30,10 @@ const loadTeapot = (request: { params: { id: string } }, response: any) => {
   response.sendFile(path.resolve(__dirname, "../../public/teapot/index.html"))
 }
 
-export { loadAsk, loadMain, loadQuestion, loadTeapot, loadSearch }
+// @desc    Load 404 page
+// @param   *
+const loadNotFound = (request: { params: { id: string } }, response: any) => {
+  response.sendFile(path.resolve(__dirname, "../../public/404/index.html"))
+}
+
+export { loadAsk, loadMain, loadQuestion, loadTeapot, loadSearch, loadNotFound }

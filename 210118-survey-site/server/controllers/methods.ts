@@ -1,4 +1,5 @@
-import asyncHandler from "express-async-handler"
+// import asyncHandler from "express-async-handler"
+import asyncHandler from "../errorHandler"
 import Question from "../models/Question"
 import createError from "http-errors"
 
@@ -11,7 +12,6 @@ interface Vote {
 // @param   GET /api/random
 const getRandomQuestion = asyncHandler(async (request, response, next) => {
   const questions = await Question.aggregate([{ $sample: { size: 1 } }])
-  console.log(questions)
   const question = questions[0]
 
   response.send({
@@ -52,8 +52,21 @@ const getQuestionById = asyncHandler(
 // @desc    Get one question with the most upvotes from the pool of questions
 // @param   GET /api/questions/top
 const getTopQuestion = asyncHandler(async (req: { params: any }, res, next) => {
+  // const questions = await Question.aggregate().group({
+  //   _id: null,
+  //   doc: {
+  //     $max: {
+  //       upVotes: "$upVotes",
+  //       downVotes: "$downVotes",
+  //       _id: "$_id",
+  //       content: "$content",
+  //     },
+  //   },
+  // })
+
   const questions = await Question.find({})
     .sort({ upVotes: -1, downVotes: 1 })
+    .skip(0)
     .limit(1)
   const question = questions[0]
 
@@ -70,15 +83,14 @@ const getTopQuestion = asyncHandler(async (req: { params: any }, res, next) => {
 // @desc    Get all questions matching a keyword
 // @param   GET /api/questions/search
 export const searchQuestions = asyncHandler(async (req, res, next) => {
-  console.log(req.query.keyword)
-
   const keyword = req.query.keyword
     ? {
-        content: { $regex: `${req.query.keyword}`, $options: "ig" },
+        content: {
+          $regex: new RegExp(req.query.keyword as string),
+          $options: "ig",
+        },
       }
     : {}
-
-  console.log(keyword)
 
   const questions = await Question.find(keyword).sort({
     upVotes: -1,

@@ -1,25 +1,14 @@
-import {
-  getRandomQuestion,
-  addQuestion,
-  addVote,
-  getQuestionById,
-  teapot,
-  getAllQuestions,
-  deleteQuestionById,
-  getTopQuestion,
-  searchQuestions,
-} from "./controller/methods"
-import {
-  loadMain,
-  loadAsk,
-  loadQuestion,
-  loadTeapot,
-  loadSearch,
-} from "./controller/render"
+import { loadNotFound } from "./controllers/render"
 import express, { Request, Response, NextFunction } from "express"
 import path from "path"
 import connectDB from "./db"
 import dotenv from "dotenv"
+
+import renderRouter from "./routers/renderRoutes"
+import questionRouter from "./routers/questionRoutes"
+import randomRouter from "./routers/randomRoutes"
+import teapotRouter from "./routers/teapotRoutes"
+import voteRouter from "./routers/voteRoutes"
 
 dotenv.config()
 connectDB()
@@ -32,18 +21,13 @@ app.use(express.json())
 app.use(express.static("public"))
 app.use(express.static(path.join(__dirname, "../public")))
 
-app.route("/").get(loadMain)
-app.route("/ask").get(loadAsk)
-app.route("/search").get(loadSearch)
-app.route("/question/:id").get(loadQuestion)
-app.route("/teapot").get(loadTeapot)
-app.route("/api/random").get(getRandomQuestion)
-app.route("/api/questions").post(addQuestion).get(getAllQuestions)
-app.route("/api/questions/top").get(getTopQuestion)
-app.route("/api/questions/search").get(searchQuestions)
-app.route("/api/questions/:id").get(getQuestionById).delete(deleteQuestionById)
-app.route("/api/vote").put(addVote)
-app.route("/api/teapot").get(teapot)
+app.use("/", renderRouter)
+app.use("/api/random", randomRouter)
+app.use("/api/questions", questionRouter)
+app.use("/api/vote", voteRouter)
+app.use("/api/teapot", teapotRouter)
+
+app.get("*", loadNotFound)
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status || 500)

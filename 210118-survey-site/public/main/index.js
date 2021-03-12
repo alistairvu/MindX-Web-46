@@ -54,14 +54,13 @@ const getQuestion = async () => {
 
     $container.html(`<h3 id="question" class="font-weight-bold">${content}</h3>
   <div id="results">
-    <div id="vote-btn">
-      <button id="up-vote" class="btn btn-success">UP</button>
-      <button id="down-vote" class="btn btn-danger">DOWN</button>
+    <div id="vote-btn" class="row">
+      <button id="up-vote" class="btn btn-success col-sm-6">UP</button>
+      <button id="down-vote" class="btn btn-danger col-sm-6">DOWN</button>
     </div>
-    <div id="other-btn">
-      <button id="results-btn" class="btn btn-primary">View results</button>
-      <button id="new-question" class="btn btn-primary">New question</button>
-      <button id="delete-btn" class="btn btn-danger">Delete question</button>
+    <div id="other-btn" class="row">
+      <button id="results-btn" class="btn btn-primary col-sm-6">View results</button>
+      <button id="new-question" class="btn btn-primary col-sm-6">New question</button>
     </div>
   </div>`)
   } catch (error) {
