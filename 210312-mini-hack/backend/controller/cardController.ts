@@ -24,9 +24,6 @@ export const createCard = asyncHandler(async (req, res, next) => {
     deck: matchingDeck._id,
   })
 
-  matchingDeck.cards.push(newCard._id)
-  await matchingDeck.save()
-
   res.send(newCard)
 })
 
@@ -49,9 +46,11 @@ export const getCard = asyncHandler(async (req, res, next) => {
       return res.status(404).send({ message: "Deck not found" })
     }
 
-    const cardIndex = Math.floor(Math.random() * matchingDeck.cards.length)
-    const cardId = matchingDeck.cards[cardIndex]
-    const card = await Card.findById(cardId)
+    const cards = await Card.aggregate([
+      { $match: { deck: matchingDeck._id } },
+      { $sample: { size: 1 } },
+    ])
+    const card = cards[0]
 
     res.send(card)
   } else {
@@ -72,12 +71,6 @@ export const updateCard = asyncHandler(async (req, res, next) => {
     return res.status(422).send({ message: "Not enough data" })
   }
 
-  const matchingCard = await Card.findById(req.params.id)
-
-  if (!matchingCard) {
-    return res.status(404).send({ message: "Card not found" })
-  }
-
   let matchingDeck
 
   if (deck) {
@@ -88,15 +81,25 @@ export const updateCard = asyncHandler(async (req, res, next) => {
     }
   }
 
-  matchingCard.front = front || matchingCard.front
-  matchingCard.back = back || matchingCard.back
-  matchingCard.deck = (matchingDeck && matchingDeck._id) || matchingCard.deck
+  const newData: any = {}
 
+  if (front) {
+    newData.front = front
+  }
+  if (back) {
+    newData.back = back
+  }
+  if (deck && matchingDeck) {
+    newData.deck = matchingDeck._id
+  }
   if (completed !== undefined) {
-    matchingCard.completed = completed
+    newData.completed = completed
   }
 
-  await matchingCard.save()
+  const updatedCard = await Card.findByIdAndUpdate(req.params.id, newData, {
+    new: true,
+    upsert: true,
+  })
 
-  res.send(matchingCard)
+  res.send(updatedCard)
 })

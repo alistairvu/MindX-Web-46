@@ -12,10 +12,7 @@ const importData = async () => {
     await Deck.deleteMany()
     await Card.deleteMany()
 
-    await Deck.insertMany([
-      { name: "code", cards: [] },
-      { name: "english", cards: [] },
-    ])
+    await Deck.insertMany([{ name: "code" }, { name: "english" }])
 
     console.log("Data Imported!")
     process.exit()

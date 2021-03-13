@@ -2,7 +2,6 @@ import mongoose from "mongoose"
 
 interface DeckSchema extends mongoose.Document {
   name: string
-  cards: mongoose.Schema.Types.ObjectId[]
 }
 
 const deckSchema = new mongoose.Schema<DeckSchema>(
@@ -11,12 +10,6 @@ const deckSchema = new mongoose.Schema<DeckSchema>(
       type: String,
       required: true,
     },
-    cards: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: "Card",
-      },
-    ],
   },
   { timestamps: true }
 )

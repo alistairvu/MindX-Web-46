@@ -24,6 +24,7 @@ const cardSchema = new mongoose.Schema<CardSchema>(
     deck: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Deck",
+      required: true,
     },
   },
   { timestamps: true }
