@@ -13,11 +13,12 @@ export const getAllDecks = asyncHandler(async (req, res, next) => {
 // @param   GET /api/decks/:name
 export const getMatchingDeck = asyncHandler(async (req, res, next) => {
   const deck = await Deck.findOne({ name: req.params.name })
+  console.log(deck)
 
   if (!deck) {
     return res.status(404).send({ message: "No matching deck found" })
   }
 
-  const cards = await Card.find({ deck: deck._id })
+  const cards = await deck.cards()
   res.send(cards)
 })
