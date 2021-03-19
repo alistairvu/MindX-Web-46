@@ -1,6 +1,9 @@
 import Container from "react-bootstrap/Container"
 import Form from "react-bootstrap/Form"
 import Spinner from "react-bootstrap/Spinner"
+import Row from "react-bootstrap/Row"
+import Col from "react-bootstrap/Col"
+import Button from "react-bootstrap/Button"
 import { Component } from "react"
 import { Helmet } from "react-helmet"
 import axios from "axios"
@@ -41,7 +44,7 @@ class App extends Component<Record<string, never>, AppState> {
 
   handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    this.setState({ searchData: [] })
+    this.setState({ searchData: [], offset: 0 })
     this.fetchGifs()
   }
 
@@ -78,12 +81,21 @@ class App extends Component<Record<string, never>, AppState> {
             <h1 className="pt-4">Welcome to GIF Search!</h1>
 
             <Form onSubmit={this.handleSubmit}>
-              <Form.Control
-                type="text"
-                value={keyword}
-                onChange={this.handleKeywordChange}
-                placeholder="Type your keyword here..."
-              />
+              <Row>
+                <Col sm={9}>
+                  <Form.Control
+                    type="text"
+                    value={keyword}
+                    onChange={this.handleKeywordChange}
+                    placeholder="Type your keyword here..."
+                  />
+                </Col>
+                <Col sm={3}>
+                  <Button variant="primary" type="submit">
+                    Search
+                  </Button>
+                </Col>
+              </Row>
             </Form>
 
             <>
