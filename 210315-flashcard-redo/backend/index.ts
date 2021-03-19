@@ -54,12 +54,50 @@ app.post("/api/flashcards", async (req, res) => {
   }
 })
 
+app.get("/api/flashcards/:id", async (req, res) => {
+  const { id } = req.params
+  try {
+    const matchingCard = await Flashcard.findById(id)
+
+    if (!matchingCard) {
+      return res.status(404).send({ success: 0 })
+    }
+
+    res.send({ success: 1, data: matchingCard })
+  } catch (err) {
+    res.status(500).send({ success: 0 })
+  }
+})
+
+app.put("/api/flashcards/:id", async (req, res) => {
+  const updateData = req.body
+  try {
+    const newCard = await Flashcard.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    )
+
+    if (!newCard) {
+      return res.status(404).send({ success: 0 })
+    }
+
+    res.send({ success: 1, data: newCard })
+  } catch (err) {
+    res.status(500).send({ success: 0 })
+  }
+})
+
 app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../frontend/html/home.html"))
 })
 
 app.get("/create", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../frontend/html/create.html"))
+})
+
+app.get("/edit/flashcards/:id", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../frontend/html/edit.html"))
 })
 
 app.listen(port, () => {
