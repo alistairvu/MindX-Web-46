@@ -41,7 +41,7 @@ const App: React.FC = () => {
       document.documentElement.scrollHeight
     if (bottom) {
       console.log("Loading...")
-      fetchGifs()
+      fetchGifs(keyword)
     }
   }
 
