@@ -44,8 +44,9 @@ class App extends Component<Record<string, never>, AppState> {
 
   handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    this.setState({ searchData: [], offset: 0 })
-    this.fetchGifs()
+    this.setState({ searchData: [], offset: 0 }, () => {
+      this.fetchGifs()
+    })
   }
 
   handleScroll = () => {
@@ -60,6 +61,10 @@ class App extends Component<Record<string, never>, AppState> {
 
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll)
   }
 
   handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
