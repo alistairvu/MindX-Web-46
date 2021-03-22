@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col"
 import GIPHYLogo from "./images/1280px-Giphy-logo.png"
 import { useState, useEffect } from "react"
 import axios from "axios"
-import AppGif from "./components/AppGif"
+import { AppGif } from "./components"
 
 const App: React.FC = () => {
   const [keyword, setKeyword] = useState<string>("")
@@ -54,12 +54,12 @@ const App: React.FC = () => {
     <>
       <main>
         <Container className="text-center py-5">
-          <img src={GIPHYLogo} alt="GIPHY logo" style={{ height: 100 }} />
+          <img src={GIPHYLogo} alt="GIPHY logo" style={{ width: 300 }} />
           <h1 className="pt-4">Welcome to GIF Search!</h1>
 
           <Form onSubmit={handleSubmit}>
             <Row>
-              <Col sm={9}>
+              <Col sm={10}>
                 <Form.Control
                   type="text"
                   value={keyword}
@@ -67,8 +67,8 @@ const App: React.FC = () => {
                   placeholder="Type your keyword here..."
                 />
               </Col>
-              <Col sm={3}>
-                <Button variant="primary" type="submit">
+              <Col sm={2}>
+                <Button variant="primary" type="submit" className="w-100">
                   Search
                 </Button>
               </Col>

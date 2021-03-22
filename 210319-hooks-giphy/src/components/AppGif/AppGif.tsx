@@ -1,7 +1,7 @@
 import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 
-interface AppGifProps {
+export interface AppGifProps {
   images: {
     downsized: {
       url: string
