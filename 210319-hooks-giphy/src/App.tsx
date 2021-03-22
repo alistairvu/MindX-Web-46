@@ -15,7 +15,7 @@ const App: React.FC = () => {
   const [searchData, setSearchData] = useState<GIFInterface[]>([] as GIFInterface[])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const fetchGifs = async (keyword: string) => {
+  const fetchGifs = async (keyword: string, offset: number) => {
     setIsLoading(true)
     const { data } = await axios.get(
       `//api.giphy.com/v1/gifs/search?q=${keyword}&api_key=${process.env.REACT_APP_GIPHY_API_KEY}&limit=20&offset=${
@@ -32,7 +32,7 @@ const App: React.FC = () => {
     e.preventDefault()
     setSearchData([])
     setOffset(0)
-    fetchGifs(keyword)
+    fetchGifs(keyword, offset)
   }
 
   const handleScroll = () => {
@@ -41,7 +41,7 @@ const App: React.FC = () => {
       document.documentElement.scrollHeight
     if (bottom) {
       console.log("Loading...")
-      fetchGifs(keyword)
+      fetchGifs(keyword, offset)
     }
   }
 
