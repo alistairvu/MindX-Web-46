@@ -1,0 +1,16 @@
+{
+  "en": {
+    "translation": {
+      "welcome": "Welcome to GIF Search!",
+      "inputPlaceholder": "Type your keyword here...",
+      "search": "Search"
+    }
+  },
+  "vi": {
+    "translation": {
+      "welcome": "Chào mừng tới GIF Search!",
+      "inputPlaceholder": "Nhập từ khoá...",
+      "search": "Tìm kiếm"
+    }
+  }
+}

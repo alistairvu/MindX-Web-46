@@ -1,13 +1,8 @@
 import Container from "react-bootstrap/Container"
-import Form from "react-bootstrap/Form"
 import Spinner from "react-bootstrap/Spinner"
-import Button from "react-bootstrap/Button"
-import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/Col"
-import GIPHYLogo from "./images/1280px-Giphy-logo.png"
 import { useState, useEffect } from "react"
 import axios from "axios"
-import { AppGif } from "./components"
+import { AppGifCard, AppHeader, AppSearchForm } from "./components"
 
 const App: React.FC = () => {
   const [keyword, setKeyword] = useState<string>("")
@@ -54,30 +49,13 @@ const App: React.FC = () => {
     <>
       <main>
         <Container className="text-center py-5">
-          <img src={GIPHYLogo} alt="GIPHY logo" style={{ width: 300 }} />
-          <h1 className="pt-4">Welcome to GIF Search!</h1>
+          <AppHeader />
 
-          <Form onSubmit={handleSubmit}>
-            <Row>
-              <Col sm={10}>
-                <Form.Control
-                  type="text"
-                  value={keyword}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.target.value)}
-                  placeholder="Type your keyword here..."
-                />
-              </Col>
-              <Col sm={2}>
-                <Button variant="primary" type="submit" className="w-100">
-                  Search
-                </Button>
-              </Col>
-            </Row>
-          </Form>
+          <AppSearchForm handleSubmit={handleSubmit} keyword={keyword} setKeyword={setKeyword} isLoading={isLoading} />
 
           <>
             {searchData.map((gif) => (
-              <AppGif {...gif} key={gif.id} />
+              <AppGifCard image={gif.images.downsized.url} title={gif.title} key={gif.id} />
             ))}
             {isLoading && <Spinner animation="border" className="mt-4" />}
           </>

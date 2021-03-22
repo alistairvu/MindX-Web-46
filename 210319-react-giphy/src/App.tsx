@@ -1,13 +1,9 @@
 import Container from "react-bootstrap/Container"
-import Form from "react-bootstrap/Form"
 import Spinner from "react-bootstrap/Spinner"
-import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/Col"
-import Button from "react-bootstrap/Button"
 import { Component } from "react"
 import { Helmet } from "react-helmet"
 import axios from "axios"
-import { GifCard, Header } from "./components"
+import { GifCard, Header, SearchForm } from "./components"
 
 interface AppState {
   keyword: string
@@ -85,23 +81,12 @@ class App extends Component<Record<string, never>, AppState> {
           </header>
 
           <main>
-            <Form onSubmit={this.handleSubmit}>
-              <Row>
-                <Col sm={9}>
-                  <Form.Control
-                    type="text"
-                    value={keyword}
-                    onChange={this.handleKeywordChange}
-                    placeholder="Type your keyword here..."
-                  />
-                </Col>
-                <Col sm={3}>
-                  <Button variant="primary" type="submit">
-                    Search
-                  </Button>
-                </Col>
-              </Row>
-            </Form>
+            <SearchForm
+              handleSubmit={this.handleSubmit}
+              keyword={keyword}
+              setKeyword={(value: string) => this.setState({ keyword: value })}
+              isLoading={loading}
+            />
 
             <>
               {searchData.map((gif) => (
