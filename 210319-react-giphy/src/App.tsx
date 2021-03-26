@@ -6,41 +6,39 @@ import axios from "axios"
 import { GifCard, Header, SearchForm } from "./components"
 
 interface AppState {
-  keyword: string
   offset: number
   searchData: GIFInterface[]
   loading: boolean
+  currentKeyword: string
 }
 
 class App extends Component<Record<string, never>, AppState> {
   state = {
-    keyword: "",
+    currentKeyword: "",
     offset: 0,
     searchData: [] as GIFInterface[],
     loading: false,
   }
 
-  fetchGifs = async () => {
+  fetchGifs = async (keyword: string = this.state.currentKeyword) => {
     this.setState({ loading: true })
 
     const { data } = await axios.get(
-      `//api.giphy.com/v1/gifs/search?q=${this.state.keyword}&api_key=${
-        process.env.REACT_APP_GIPHY_API_KEY
-      }&limit=20&offset=${this.state.offset * 20}`,
+      `//api.giphy.com/v1/gifs/search?q=${keyword}&api_key=${process.env.REACT_APP_GIPHY_API_KEY}&limit=20&offset=${
+        this.state.offset * 20
+      }`,
     )
     console.log(data)
 
     this.setState((prev) => ({
-      offset: prev.offset + 1,
       searchData: [...prev.searchData, ...data.data],
       loading: false,
     }))
   }
 
-  handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    this.setState({ searchData: [], offset: 0 }, () => {
-      this.fetchGifs()
+  handleSearch = (keyword: string) => {
+    this.setState({ searchData: [], offset: 0, currentKeyword: keyword }, () => {
+      this.fetchGifs(keyword)
     })
   }
 
@@ -50,7 +48,12 @@ class App extends Component<Record<string, never>, AppState> {
       document.documentElement.scrollHeight
     if (bottom) {
       console.log("Loading...")
-      this.fetchGifs()
+      this.setState(
+        (prev) => ({ offset: prev.offset + 1 }),
+        () => {
+          this.fetchGifs()
+        },
+      )
     }
   }
 
@@ -62,12 +65,8 @@ class App extends Component<Record<string, never>, AppState> {
     window.removeEventListener("scroll", this.handleScroll)
   }
 
-  handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ keyword: e.target.value })
-  }
-
   render() {
-    const { keyword, loading, searchData } = this.state
+    const { loading, searchData } = this.state
 
     return (
       <>
@@ -81,12 +80,7 @@ class App extends Component<Record<string, never>, AppState> {
           </header>
 
           <main>
-            <SearchForm
-              handleSubmit={this.handleSubmit}
-              keyword={keyword}
-              setKeyword={(value: string) => this.setState({ keyword: value })}
-              isLoading={loading}
-            />
+            <SearchForm handleSearch={this.handleSearch} isLoading={loading} />
 
             <>
               {searchData.map((gif) => (

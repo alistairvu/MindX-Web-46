@@ -3,20 +3,31 @@ import Button from "react-bootstrap/Button"
 import { Component } from "react"
 
 export interface SearchFormProps {
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
-  keyword: string
-  setKeyword: (value: string) => void
+  handleSearch: (keyword: string) => void
   isLoading: boolean
 }
 
-class SearchForm extends Component<SearchFormProps> {
+interface SearchFormState {
+  keyword: string
+}
+
+class SearchForm extends Component<SearchFormProps, SearchFormState> {
+  state = {
+    keyword: "",
+  }
+
+  handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    this.props.handleSearch(this.state.keyword)
+  }
+
   render() {
     return (
-      <Form onSubmit={this.props.handleSubmit} className="d-flex">
+      <Form onSubmit={this.handleSubmit} className="d-flex">
         <Form.Control
           type="text"
-          value={this.props.keyword}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.props.setKeyword(e.target.value)}
+          value={this.state.keyword}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ keyword: e.target.value })}
           placeholder="Type your keyword here..."
           className="me-3"
         />
@@ -24,7 +35,7 @@ class SearchForm extends Component<SearchFormProps> {
         <Button
           variant="primary"
           type="submit"
-          disabled={this.props.isLoading || this.props.keyword.trim().length == 0}
+          disabled={this.props.isLoading || this.state.keyword.trim().length == 0}
         >
           Search
         </Button>
