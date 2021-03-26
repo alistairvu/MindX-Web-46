@@ -5,10 +5,11 @@ import { Component } from "react"
 
 interface AppState {
   todoList: ToDoItemInterface[]
-  id: number
 }
 
 class App extends Component<Record<string, never>, AppState> {
+  private id = 0
+
   state = {
     todoList: [
       {
@@ -17,13 +18,12 @@ class App extends Component<Record<string, never>, AppState> {
         done: false,
       },
     ],
-    id: 1,
   }
 
   handleAdd = (title: string): void => {
+    this.id++
     this.setState((prev) => ({
-      id: prev.id + 1,
-      todoList: [...prev.todoList, { id: prev.id, title: title, done: false }],
+      todoList: [...prev.todoList, { id: this.id, title: title, done: false }],
     }))
   }
 

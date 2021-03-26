@@ -4,7 +4,7 @@ interface AppToDoCountProps {
   todoList: ToDoItemInterface[]
 }
 
-export default class AppToDoCount extends Component<AppToDoCountProps> {
+class AppToDoCount extends Component<AppToDoCountProps> {
   render(): JSX.Element {
     const count = this.props.todoList.filter((item) => item.done === false).length
 
@@ -15,3 +15,5 @@ export default class AppToDoCount extends Component<AppToDoCountProps> {
     return <h4 className="mb-3">There {count === 1 ? "is 1 task" : `are ${count} tasks`} to complete.</h4>
   }
 }
+
+export default AppToDoCount

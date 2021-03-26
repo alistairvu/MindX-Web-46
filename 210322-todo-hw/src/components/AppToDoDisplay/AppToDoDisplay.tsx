@@ -1,4 +1,4 @@
-import { Component } from "react"
+import { Component, memo } from "react"
 import ListGroup from "react-bootstrap/ListGroup"
 import FormCheck from "react-bootstrap/FormCheck"
 import Button from "react-bootstrap/Button"
@@ -9,7 +9,7 @@ interface AppToDoDisplayProps {
   handleDelete: (id: number) => void
 }
 
-export default class AppToDoDisplay extends Component<AppToDoDisplayProps> {
+class AppToDoDisplay extends Component<AppToDoDisplayProps> {
   render(): JSX.Element {
     const { item, handleToggle, handleDelete } = this.props
 
@@ -28,3 +28,5 @@ export default class AppToDoDisplay extends Component<AppToDoDisplayProps> {
     )
   }
 }
+
+export default memo(AppToDoDisplay)
