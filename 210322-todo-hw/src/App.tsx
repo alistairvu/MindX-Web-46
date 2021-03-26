@@ -1,15 +1,11 @@
 import Container from "react-bootstrap/Container"
-import Form from "react-bootstrap/Form"
-import InputGroup from "react-bootstrap/InputGroup"
-import Button from "react-bootstrap/Button"
 import ListGroup from "react-bootstrap/ListGroup"
-import { AppToDoCount, AppToDoDisplay } from "./components"
+import { AppToDoCount, AppToDoDisplay, AppToDoInput } from "./components"
 import { Component } from "react"
 
 interface AppState {
   todoList: ToDoItemInterface[]
   id: number
-  nextTitle: string
 }
 
 class App extends Component<Record<string, never>, AppState> {
@@ -22,19 +18,12 @@ class App extends Component<Record<string, never>, AppState> {
       },
     ],
     id: 1,
-    nextTitle: "",
   }
 
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ nextTitle: e.target.value })
-  }
-
-  handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault()
+  handleAdd = (title: string): void => {
     this.setState((prev) => ({
       id: prev.id + 1,
-      todoList: [...prev.todoList, { id: prev.id, title: prev.nextTitle, done: false }],
-      nextTitle: "",
+      todoList: [...prev.todoList, { id: prev.id, title: title, done: false }],
     }))
   }
 
@@ -61,19 +50,7 @@ class App extends Component<Record<string, never>, AppState> {
     return (
       <main>
         <Container className="py-3">
-          <Form onSubmit={this.handleSubmit} className="mb-3">
-            <InputGroup>
-              <Form.Control
-                placeholder="Enter new todo..."
-                type="text"
-                value={this.state.nextTitle}
-                onChange={this.handleInputChange}
-              />
-              <Button variant="primary" type="submit">
-                Add
-              </Button>
-            </InputGroup>
-          </Form>
+          <AppToDoInput handleAdd={this.handleAdd} />
 
           <AppToDoCount todoList={this.state.todoList} />
 
