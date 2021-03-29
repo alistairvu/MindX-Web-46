@@ -8,7 +8,7 @@ const createUser = async (req: Request, res: Response) => {
     const { email, password } = req.body
     const existingUser = await User.findOne({ email })
     if (existingUser) {
-      throw new createError.badRequest(
+      throw new createError.BadRequest(
         `User with email ${email} already exists.`
       )
     }
@@ -26,12 +26,12 @@ const loginUser = async (req: Request, res: Response) => {
     const { email, password } = req.body
     const matchingUser = await User.findOne({ email })
     if (!matchingUser) {
-      throw new createError.badRequest("Wrong email/password combination.")
+      throw new createError.BadRequest("Wrong email/password combination.")
     }
 
     const isPasswordMatch = matchingUser.checkPassword(password)
     if (!isPasswordMatch) {
-      throw new createError.badRequest("Wrong email/password combination.")
+      throw new createError.BadRequest("Wrong email/password combination.")
     }
 
     res.send({ success: 1, user: matchingUser })
