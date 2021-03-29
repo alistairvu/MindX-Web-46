@@ -43,17 +43,28 @@ class App extends Component<Record<string, never>, AppState> {
   }
 
   handleScroll = () => {
-    const bottom =
-      Math.ceil(document.documentElement.scrollTop + document.documentElement.clientHeight) >=
-      document.documentElement.scrollHeight
+    const bottom = window.innerHeight + window.scrollY >= document.body.offsetHeight
+    let loadingTimeout: NodeJS.Timeout | null = null
     if (bottom) {
-      console.log("Loading...")
-      this.setState(
-        (prev) => ({ offset: prev.offset + 1 }),
-        () => {
-          this.fetchGifs()
-        },
-      )
+      this.setState({ loading: true })
+
+      if (loadingTimeout !== null) {
+        clearTimeout(loadingTimeout)
+      }
+
+      loadingTimeout = setTimeout(() => {
+        const newBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight
+        if (newBottom) {
+          this.setState(
+            (prev) => ({ offset: prev.offset + 1 }),
+            () => {
+              this.fetchGifs()
+            },
+          )
+        } else {
+          this.setState({ loading: false })
+        }
+      }, 500)
     }
   }
 

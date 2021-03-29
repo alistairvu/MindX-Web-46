@@ -8,7 +8,7 @@ class AppToDoCount extends Component<AppToDoCountProps> {
   render(): JSX.Element {
     const count = this.props.todoList.filter((item) => item.done === false).length
 
-    if (count == 0) {
+    if (count === 0) {
       return <h4 className="mb-3">All tasks are complete!</h4>
     }
 

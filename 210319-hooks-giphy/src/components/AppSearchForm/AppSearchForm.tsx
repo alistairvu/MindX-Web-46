@@ -1,27 +1,54 @@
 import Form from "react-bootstrap/Form"
-import Button from "react-bootstrap/Button"
+import { useState, useEffect } from "react"
+import debounce from "lodash.debounce"
 
-export interface AppSearchFormProps {
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
-  keyword: string
-  setKeyword: (value: React.SetStateAction<string>) => void
-  isLoading: boolean
+interface AppSearchFormProps {
+  fetchGifs: (keyword: string, offset: number) => Promise<void>
 }
 
-const AppSearchForm: React.FC<AppSearchFormProps> = ({ handleSubmit, keyword, setKeyword, isLoading }) => {
+const AppSearchForm: React.FC<AppSearchFormProps> = ({ fetchGifs }) => {
+  const [keyword, setKeyword] = useState("")
+  const [offset, setOffset] = useState(0)
+
+  const handleScroll = () => {
+    const bottom = window.innerHeight + window.scrollY >= document.body.offsetHeight
+    if (bottom) {
+      setOffset((prev) => prev + 1)
+    }
+  }
+
+  // add debounce here
+  const debounceHandleScroll = debounce(handleScroll, 1000)
+
+  useEffect(() => {
+    window.addEventListener("scroll", debounceHandleScroll)
+    return () => window.removeEventListener("scroll", () => debounceHandleScroll)
+  }, [])
+
+  useEffect(() => {
+    fetchGifs(keyword, offset)
+  }, [offset])
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value)
+    setOffset(0)
+    let searchTimeout: NodeJS.Timeout | null = null
+
+    if (searchTimeout !== null) {
+      clearInterval(searchTimeout)
+    }
+    searchTimeout = setTimeout(() => fetchGifs(e.target.value, 0), 1500)
+  }
+
   return (
-    <Form onSubmit={handleSubmit} className="d-flex">
+    <Form className="d-flex">
       <Form.Control
         type="text"
         value={keyword}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.target.value)}
+        onChange={handleChange}
         className="me-3"
         placeholder={"Type your keyword here..."}
       />
-
-      <Button variant="primary" type="submit" disabled={isLoading || keyword.trim().length == 0}>
-        Search
-      </Button>
     </Form>
   )
 }

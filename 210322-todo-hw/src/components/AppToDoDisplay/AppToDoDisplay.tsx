@@ -16,10 +16,14 @@ class AppToDoDisplay extends Component<AppToDoDisplayProps> {
     return (
       <ListGroup.Item className="d-flex justify-content-between align-items-center">
         <div className="d-flex">
-          <FormCheck checked={item.done} onChange={() => handleToggle(item.id)} />
-          <span className="ms-3" style={{ textDecoration: item.done ? "line-through" : " none" }}>
+          <FormCheck checked={item.done} onChange={() => handleToggle(item.id)} id={`item-${item.id}`} />
+          <label
+            className="ms-3"
+            style={{ textDecoration: item.done ? "line-through" : " none" }}
+            htmlFor={`item-${item.id}`}
+          >
             {item.title}
-          </span>
+          </label>
         </div>
         <Button variant="danger" onClick={() => handleDelete(item.id)}>
           Delete
