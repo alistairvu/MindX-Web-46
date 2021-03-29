@@ -14,6 +14,6 @@
     "typescript": "^4.2.3"
   },
   "scripts": {
-    "dev": "nodemon"
+    "dev": "concurrently \"nodemon\""
   }
 }
