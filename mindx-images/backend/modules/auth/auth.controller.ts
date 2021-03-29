@@ -11,10 +11,30 @@ const createUser = async (req: Request, res: Response) => {
     }
 
     const newUser = await User.create({ email, password })
-    res.send({ success: true, user: newUser })
+    res.send({ success: 1, user: newUser })
   } catch (err) {
-    res.status(500).send({ success: 0, message: err.message })
+    res.status(401).send({ success: 0, message: err.message })
   }
 }
 
-export { createUser }
+// POST /api/auth/login
+const loginUser = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body
+    const matchingUser = await User.findOne({ email })
+    if (!matchingUser) {
+      throw new Error(`Wrong email/password combination.`)
+    }
+
+    const isPasswordMatch = matchingUser.checkPassword(password)
+    if (!isPasswordMatch) {
+      throw new Error(`Wrong email/password combination.`)
+    }
+
+    res.send({ success: 1, user: matchingUser })
+  } catch (err) {
+    res.status(401).send({ success: 0, message: err.message })
+  }
+}
+
+export { createUser, loginUser }

@@ -18,6 +18,10 @@ app.use("/api/auth", authRouter)
 app.use("/api/posts", postRouter)
 app.use("/api/comments", commentRouter)
 
+app.use("*", (req, res) =>
+  res.status(404).send({ success: 0, message: "Route not found" })
+)
+
 app.listen(port, () => {
   console.log("Listening on port 6960")
 })
