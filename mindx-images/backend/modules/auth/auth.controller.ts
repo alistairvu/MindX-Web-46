@@ -1,43 +1,116 @@
 import { Request, Response } from "express"
+import createToken from "../../utils/jwt"
+import jwt from "jsonwebtoken"
 import User from "./user"
-import createError from "http-errors"
+import HTTPError from "../../httpError"
 
 // POST /api/auth/signup
-const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body
+
     const existingUser = await User.findOne({ email })
     if (existingUser) {
-      throw new createError.BadRequest(
-        `User with email ${email} already exists.`
-      )
+      throw new HTTPError(`User with email ${email} already exists.`, 401)
     }
 
     const newUser = await User.create({ email, password })
-    res.send({ success: 1, user: newUser })
+
+    const token = createToken(newUser._id)
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60,
+      path: "/",
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    })
+
+    res.send({ success: 1, loggedIn: 1, user: newUser })
   } catch (err) {
-    res.status(err.status || 500).send({ success: 0, message: err.message })
+    res
+      .status(err.status || 500)
+      .send({ success: 0, loggedIn: 1, message: err.message })
   }
 }
 
 // POST /api/auth/login
-const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body
     const matchingUser = await User.findOne({ email })
     if (!matchingUser) {
-      throw new createError.BadRequest("Wrong email/password combination.")
+      throw new HTTPError("Wrong email/password combination.", 401)
     }
 
     const isPasswordMatch = matchingUser.checkPassword(password)
     if (!isPasswordMatch) {
-      throw new createError.BadRequest("Wrong email/password combination.")
+      throw new HTTPError("Wrong email/password combination.", 401)
     }
 
-    res.send({ success: 1, user: matchingUser })
+    const token = createToken(matchingUser._id)
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60,
+      path: "/",
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    })
+
+    res.send({ success: 1, loggedIn: 1, user: matchingUser })
   } catch (err) {
-    res.status(err.status || 500).send({ success: 0, message: err.message })
+    res
+      .status(err.status || 500)
+      .send({ success: 0, loggedIn: 0, message: err.message })
   }
 }
 
-export { createUser, loginUser }
+// GET api/auth/status
+export const checkStatus = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.cookies
+
+    if (!token || token === "deleted") {
+      return res
+        .status(200)
+        .send({ success: 1, loggedIn: 0, message: "User not logged in" })
+    }
+
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET) as {
+      _id: string
+    }
+
+    const user = await User.findById(_id)
+
+    if (!user) {
+      throw new HTTPError("Wrong credentials", 401)
+    }
+
+    const newToken = createToken(user._id)
+    res.cookie("token", newToken, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60,
+      path: "/",
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    })
+
+    res.send({ success: 1, loggedIn: 1, user: user })
+  } catch (err) {
+    res
+      .status(err.status || 500)
+      .send({ success: 0, loggedIn: 0, message: err.message })
+  }
+}
+
+// DELETE api/auth/logout
+export const logoutUser = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("token")
+
+    res.send({ success: 1, loggedOut: 1 })
+  } catch (err) {
+    res
+      .status(err.status || 500)
+      .send({ success: 0, loggedOut: 0, message: err.message })
+  }
+}
