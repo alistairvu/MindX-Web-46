@@ -1,5 +1,7 @@
 import { Request, Response } from "express"
 import createToken from "../../utils/jwt"
+import redisClient from "../../redis"
+import { promisify } from "es6-promisify"
 import jwt from "jsonwebtoken"
 import User from "./user"
 import HTTPError from "../../httpError"
@@ -69,7 +71,13 @@ export const checkStatus = async (req: Request, res: Response) => {
   try {
     const { token } = req.cookies
 
-    if (!token || token === "deleted") {
+    const isMemberPromise = promisify(
+      redisClient.sismember.bind(redisClient)
+    ) as (key: string, member: string) => Promise<boolean>
+
+    const isInBlacklist = await isMemberPromise("mindx-images-blacklist", token)
+
+    if (!token || token === "deleted" || isInBlacklist) {
       return res
         .status(200)
         .send({ success: 1, loggedIn: 0, message: "User not logged in" })
@@ -86,6 +94,8 @@ export const checkStatus = async (req: Request, res: Response) => {
     }
 
     const newToken = createToken(user._id)
+    redisClient.sadd("mindx-images-blacklist", token)
+
     res.cookie("token", newToken, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60,
@@ -105,8 +115,9 @@ export const checkStatus = async (req: Request, res: Response) => {
 // DELETE api/auth/logout
 export const logoutUser = async (req: Request, res: Response) => {
   try {
+    const { token } = req.cookies
     res.clearCookie("token")
-
+    redisClient.sadd("mindx-images-blacklist", token)
     res.send({ success: 1, loggedOut: 1 })
   } catch (err) {
     res
