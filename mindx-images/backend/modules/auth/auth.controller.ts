@@ -7,7 +7,7 @@ import User from "./user"
 import HTTPError from "../../httpError"
 
 // POST /api/auth/signup
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response, next: any) => {
   try {
     const { email, password } = req.body
 
@@ -29,14 +29,12 @@ export const createUser = async (req: Request, res: Response) => {
 
     res.send({ success: 1, loggedIn: 1, user: newUser })
   } catch (err) {
-    res
-      .status(err.status || 500)
-      .send({ success: 0, loggedIn: 1, message: err.message })
+    next(err)
   }
 }
 
 // POST /api/auth/login
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response, next: any) => {
   try {
     const { email, password } = req.body
     const matchingUser = await User.findOne({ email })
@@ -60,14 +58,12 @@ export const loginUser = async (req: Request, res: Response) => {
 
     res.send({ success: 1, loggedIn: 1, user: matchingUser })
   } catch (err) {
-    res
-      .status(err.status || 500)
-      .send({ success: 0, loggedIn: 0, message: err.message })
+    next(err)
   }
 }
 
 // GET api/auth/status
-export const checkStatus = async (req: Request, res: Response) => {
+export const checkStatus = async (req: Request, res: Response, next: any) => {
   try {
     const { token } = req.cookies
 
@@ -106,22 +102,18 @@ export const checkStatus = async (req: Request, res: Response) => {
 
     res.send({ success: 1, loggedIn: 1, user: user })
   } catch (err) {
-    res
-      .status(err.status || 500)
-      .send({ success: 0, loggedIn: 0, message: err.message })
+    next(err)
   }
 }
 
 // DELETE api/auth/logout
-export const logoutUser = async (req: Request, res: Response) => {
+export const logoutUser = async (req: Request, res: Response, next: any) => {
   try {
     const { token } = req.cookies
     res.clearCookie("token")
     redisClient.sadd("mindx-images-blacklist", token)
     res.send({ success: 1, loggedOut: 1 })
   } catch (err) {
-    res
-      .status(err.status || 500)
-      .send({ success: 0, loggedOut: 0, message: err.message })
+    next(err)
   }
 }

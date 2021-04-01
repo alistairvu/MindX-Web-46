@@ -2,10 +2,12 @@ import express from "express"
 import dotenv from "dotenv"
 import connectDB from "./db"
 import cookieParser from "cookie-parser"
+import { Request, Response } from "express"
 
 import authRouter from "./modules/auth/auth.router"
 import postRouter from "./modules/post/post.router"
 import commentRouter from "./modules/comment/comment.router"
+import { handleError } from "./httpError"
 
 dotenv.config()
 connectDB()
@@ -24,9 +26,9 @@ app.use("*", (req, res) =>
   res.status(404).send({ success: 0, message: "Route not found" })
 )
 
-// app.use((err: any, req: express.Request, res: express.Response, next: any) => {
-//   res.status(err.status || 500).send({ success: 0, message: err.message })
-// })
+app.use((err: any, req: Request, res: Response, next: any) => {
+  handleError(err, res)
+})
 
 app.listen(port, () => {
   console.log("Listening on port 6960")

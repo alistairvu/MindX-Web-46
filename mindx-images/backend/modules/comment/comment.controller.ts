@@ -5,7 +5,7 @@ import Post from "../post/post"
 import HTTPError from "../../httpError"
 
 // GET /api/comments/post/:id
-export const getComments = async (req: Request, res: Response) => {
+export const getComments = async (req: Request, res: Response, next: any) => {
   try {
     const postId = req.params.id
     const post = await Post.findById(postId)
@@ -19,12 +19,16 @@ export const getComments = async (req: Request, res: Response) => {
     })
     res.send({ success: 1, comments: comments })
   } catch (err) {
-    res.status(err.status || 500).send({ success: 0, message: err.message })
+    next(err)
   }
 }
 
 // POST /api/comments
-export const createComment = async (req: RequestWithUser, res: Response) => {
+export const createComment = async (
+  req: RequestWithUser,
+  res: Response,
+  next: any
+) => {
   try {
     const { postId, content } = req.body
     const post = await Post.findById(postId)
@@ -41,19 +45,21 @@ export const createComment = async (req: RequestWithUser, res: Response) => {
 
     res.send({ success: 1, comment: comment })
   } catch (err) {
-    res.status(err.status || 500).send({ success: 0, message: err.message })
+    next(err)
   }
 }
 
 // DELETE /api/comments/:id
-export const deleteComment = async (req: RequestWithUser, res: Response) => {
+export const deleteComment = async (
+  req: RequestWithUser,
+  res: Response,
+  next: any
+) => {
   try {
     const commentId = req.params.id
     await Comment.findByIdAndDelete(commentId)
     res.send({ success: 1, deleted: 1 })
   } catch (err) {
-    res
-      .status(err.status || 500)
-      .send({ success: 0, deleted: 0, message: err.message })
+    next(err)
   }
 }

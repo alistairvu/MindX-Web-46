@@ -42,8 +42,6 @@ export const protect = async (
 
     next()
   } catch (err) {
-    res
-      .status(err.status || 500)
-      .send({ success: 0, loggedIn: 0, message: err.message })
+    next(err)
   }
 }
