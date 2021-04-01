@@ -2,8 +2,8 @@ import mongoose from "mongoose"
 
 interface CommentSchemaInterface extends mongoose.Document {
   content: string
-  createdBy: mongoose.Schema.Types.ObjectId
-  post: mongoose.Schema.Types.ObjectId
+  createdBy: mongoose.Types.ObjectId
+  post: mongoose.Types.ObjectId
 }
 
 const CommentSchema = new mongoose.Schema(
@@ -13,12 +13,12 @@ const CommentSchema = new mongoose.Schema(
       required: true,
     },
     createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "user",
       required: true,
     },
     post: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "post",
       required: true,
     },

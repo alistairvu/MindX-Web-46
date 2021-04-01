@@ -7,7 +7,7 @@ interface PostSchemaInterface extends mongoose.Document {
   createdBy: mongoose.Schema.Types.ObjectId
 }
 
-const PostSchema = new mongoose.Schema(
+const PostSchema = new mongoose.Schema<PostSchemaInterface>(
   {
     imageUrl: {
       type: String,
