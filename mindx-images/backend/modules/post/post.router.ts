@@ -4,7 +4,7 @@ import { protect } from "../../middleware/auth.middleware"
 
 const router = express.Router()
 
-router.route("/").get(getPosts).post(protect, createPost)
 router.route("/:id").get(showPost).delete(protect, deletePost)
+router.route("/").get(getPosts).post(protect, createPost)
 
 export default router
