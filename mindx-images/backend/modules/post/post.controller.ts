@@ -9,7 +9,10 @@ export const getPosts = async (req: Request, res: Response, next: any) => {
     const pageSize = 5
     const page = Number(req.query.page) || 1
     const offset = pageSize * (page - 1)
-    const posts = await Post.find({}).limit(pageSize).skip(offset)
+    const posts = await Post.find({})
+      .populate("createdBy")
+      .limit(pageSize)
+      .skip(offset)
 
     const postCount = await Post.countDocuments()
     const pageCount = Math.ceil(postCount / pageSize)
@@ -23,7 +26,7 @@ export const getPosts = async (req: Request, res: Response, next: any) => {
 // GET /api/posts/:id
 export const showPost = async (req: Request, res: Response, next: any) => {
   try {
-    const post = await Post.findById(req.params.id)
+    const post = await Post.findById(req.params.id).populate("createdBy")
 
     if (!post) {
       throw new HTTPError("No matching posts found", 404)
